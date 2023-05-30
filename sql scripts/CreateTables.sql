@@ -14,11 +14,11 @@ CREATE TABLE MyRecipes (
 )
 
 CREATE TABLE users (
-    username VARCHAR(30),
-    firstname VARCHAR(30),
-    lastname VARCHAR(30),
-    country VARCHAR(30),
-    hash_password VARCHAR(30),
-    email VARCHAR(30)
+    username VARCHAR(100),
+    firstname VARCHAR(100),
+    lastname VARCHAR(100),
+    country VARCHAR(100),
+    hash_password VARCHAR(100),
+    email VARCHAR(100)
 
 )
