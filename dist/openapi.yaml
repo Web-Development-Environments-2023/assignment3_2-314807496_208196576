@@ -1,8 +1,13 @@
-openapi: 3.0.0
+openapi: 3.0.3
 info:
   title: Recipes api
   description: API for recipes project
   version: 1.0.1
+  termsOfService: https:/something
+  contact:
+    name: Liron Zvi and Ofir Belanky
+    email: lironzv@post.bgu.ac.il
+
 servers:
 # local:
 - url: "http://127.0.0.1:3000"
