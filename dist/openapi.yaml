@@ -17,6 +17,142 @@ tags:
 - name: Recipes
   description: All reciepes general info
 paths:
+  /getAllRecipes:
+    get:
+      description: Obtain information about recipes from the data server
+      responses:
+        200:
+          description: Successful pull of recipes info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipePreview'
+  /watchedTheRecipe:
+    post:
+      description: changes the watched field to t
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: meatball
+      responses:
+        200:
+          description: Successfully updated the watched field
+        404:
+          description: recipe not found
+  /addToFavorite:
+    put:
+      description: add recipe to favorite 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: meatball
+      responses:
+        200:
+          description: Successfully added the recipe to favorites
+        404:
+          description: recipe not found
+  /addUser:
+    post:
+      description: Creates a new user in the database
+      requestBody:
+        required: true
+        content:
+          application/json:
+            $ref: '#/components/schemas/User'
+      responses:
+        200:
+          description: Successfully created a new employee
+        400:
+          description: bad request - wrong details
+  /addNewRecipe:
+    post:
+      description: Creates a new recipe in the database
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecipePreview'
+      responses:
+        200:
+          description: Successfully created a new employee
+  /validateUser:
+    get:
+      description: Obtain information about recipes from the data server
+      parameters:
+        - name: username
+          in: query
+          description: username
+          schema: 
+            type: string
+            minimum: 10
+            maximum: 20
+            example: ofir
+        - name: password
+          in: query
+          description: users password
+          schema: 
+            type: string
+            minimum: 10
+            maximum: 20
+            example: password
+      responses:
+        '200':
+          description: user and password are valid
+          content:
+            application/json:
+              schema:
+                type: boolean
+  /getFavoriteRecipes:
+    get:
+      description: Obtain information about favorite recipes from the data server
+      responses:
+        200:
+          description: Successful pull of recipes info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipePreview'
+  /getMyRecipes:
+    get:
+      description: Obtain information about favorite recipes from the data server
+      responses:
+        200:
+          description: Successful pull of recipes info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipePreview'
+  /getFamilyRecipes:
+    put:
+      description: add recipe to family 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                  example: meatball
+      responses:
+        200:
+          description: Successfully added the recipe to family
+        404:
+          description: recipe not found
   /register:
     post:
       tags:
@@ -109,6 +245,29 @@ paths:
           description: user is not authorized
       security:
       - cookieAuth: []
+  /recipe/getRecipeByName/{recipeName}:
+    get:
+      tags:
+      - Recipes
+      summary: Return preview details on recipe by his Name
+      description: Return preview details on recipe by his name
+      - name: recipeName
+        in: path
+        description: recipe's name
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: data about the recipe
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipePreview'
+        "404":
+          description: name does not exists
   /recipes/{recipeId}:
     get:
       tags:
@@ -133,6 +292,15 @@ paths:
                 $ref: '#/components/schemas/RecipePreview'
         "404":
           description: recipeId is not exists
+  /recipes/getRandomRecipes:
+      description: Obtain information about 3 random recipes from the data server
+      responses:
+        200:
+          description: Successful pull of recipes info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecipePreview'
 components:
   schemas:
     User:
