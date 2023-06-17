@@ -9,8 +9,15 @@ CREATE TABLE FamilyRecipes (
 )
 
 CREATE TABLE MyRecipes (
-    user_id INT,
-    recipe_id INT
+    user_id VARCHAR(100),
+    recipe_id INT,
+    title VARCHAR(100),
+    readyInMinutes VARCHAR(100),
+    urlImage VARCHAR(100),
+    aggregateLikes INT,
+    vegan VARCHAR(100),
+    vegetarian VARCHAR(100), 
+    glutenFree VARCHAR(100)
 )
 
 CREATE TABLE users (

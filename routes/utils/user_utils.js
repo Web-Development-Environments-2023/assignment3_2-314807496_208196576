@@ -19,7 +19,7 @@ async function markAsFamily(user_id, recipe_id){
 }
 
 async function getMyRecipes(user_id){
-    const data = await DButils.execQuery(`select id, title, readyInMinutes, image, aggregateLikes, vegan, vegetarian, glutenFree from MyRecipes where user_id='${user_id}'`);
+    const data = await DButils.execQuery(`select recipe_id, title, readyInMinutes, urlImage, aggregateLikes, vegan, vegetarian, glutenFree from MyRecipes where user_id='${user_id}'`);
     return data;
 }
 async function addRecipe(user_id, id, title, readyInMinutes, image, aggregateLikes, vegan, vegetarian, glutenFree ){
