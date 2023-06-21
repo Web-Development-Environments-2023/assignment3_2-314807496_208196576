@@ -13,7 +13,7 @@ CREATE TABLE MyRecipes (
     recipe_id INT,
     title VARCHAR(100),
     readyInMinutes VARCHAR(100),
-    urlImage VARCHAR(100),
+    urlImage VARCHAR(1000),
     aggregateLikes INT,
     vegan VARCHAR(100),
     vegetarian VARCHAR(100), 

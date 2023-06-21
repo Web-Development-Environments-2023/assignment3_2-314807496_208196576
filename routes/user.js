@@ -89,7 +89,7 @@ router.get('/myRecipes', async (req,res,next) => {
     const user_id = req.session.user_id;
     const recipes = await user_utils.getMyRecipes(user_id);
     let recipes_array = [];
-    recipes.map((element) => recipes_array.push(element.recipes)); //extracting the recipe ids into array
+    recipes.map((element) => recipes_array.push(element)); //extracting the recipe ids into array
     res.status(200).send(recipes_array);
   } catch(error){
     next(error); 
@@ -103,7 +103,7 @@ router.post('/myRecipes', async (req,res,next) => {
   try{
     const user_id = req.session.user_id;
     let { id, title, readyInMinutes, image, aggregateLikes, vegan, vegetarian, glutenFree } = req.body;
-    user_utils.addRecipe(user_id, title, readyInMinutes, image, aggregateLikes, vegan, vegetarian, glutenFree);
+    user_utils.addRecipe(user_id,id, title, readyInMinutes, image, aggregateLikes, vegan, vegetarian, glutenFree);
     res.status(200).send("The Recipe successfully saved as my recipe");
   } catch(error){
     next(error); 

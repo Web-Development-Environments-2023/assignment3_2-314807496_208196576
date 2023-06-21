@@ -23,7 +23,7 @@ async function getMyRecipes(user_id){
     return data;
 }
 async function addRecipe(user_id, id, title, readyInMinutes, image, aggregateLikes, vegan, vegetarian, glutenFree ){
-    await DButils.execQuery(`insert into MyRecipes values ('${user_id}',${id},${title},${readyInMinutes},${image},${aggregateLikes},${vegan},${vegetarian},${glutenFree})`);
+    await DButils.execQuery(`insert into MyRecipes values ('${user_id}',${id},'${title}','${readyInMinutes}','${image}',${aggregateLikes},'${vegan}','${vegetarian}','${glutenFree}')`);
 }
 
 
