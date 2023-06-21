@@ -87,11 +87,17 @@ async function getRecipeByName(query, user_id) {
     return recieps_as_array;
   }
 
+  async function getRecipesPreview(recipe_ids){
+    const reciepes = recipe_ids.map(id => getRecipeDetails(id));
+    return reciepes;
+  }
+
 
 
 
 
 exports.getRecipeDetails = getRecipeDetails;
 exports.getRandomRecipe = getRandomRecipe;
-
+exports.getRecipeByName = getRecipeByName;
+exports.getRecipesPreview = getRecipesPreview;
 
