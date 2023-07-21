@@ -71,7 +71,7 @@ async function getRecipeByName(query, user_id) {
         apiKey: process.env.spooncular_apiKey        
       },
     });
-    let recipes_data = recieps.data;
+    let recipes_data = recipes.data;
     let recieps_as_array = recipes_data.recipes.map(item => {
         return {
             id: item.id,
@@ -88,7 +88,11 @@ async function getRecipeByName(query, user_id) {
   }
 
   async function getRecipesPreview(recipe_ids){
-    const reciepes = recipe_ids.map(id => getRecipeDetails(id));
+    const reciepes = []
+    for(let i=0; i<recipe_ids.length;i++){
+        let recipe = await getRecipeDetails(recipe_ids[i])
+        reciepes.push(recipe)
+    }
     return reciepes;
   }
 

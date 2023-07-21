@@ -1,5 +1,5 @@
 CREATE TABLE FavoriteRecipes (
-    user_id INT,
+    user_id VARCHAR(100),
     recipe_id INT
 )
 
@@ -13,7 +13,7 @@ CREATE TABLE MyRecipes (
     recipe_id INT,
     title VARCHAR(100),
     readyInMinutes VARCHAR(100),
-    urlImage VARCHAR(1000),
+    urlImage VARCHAR(10000),
     aggregateLikes INT,
     vegan VARCHAR(100),
     vegetarian VARCHAR(100), 
