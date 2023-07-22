@@ -63,25 +63,32 @@ async function getRandomRecipe(){
 }
 
 async function getRecipeByName(query, user_id) {
-    let { name } = query;
-    console.log(name);
-    let recipes = await axios.get(`${api_domain}/searchByName`, {
+    let { name,id,readyInMinutes,vegan,vegetarian,glutenFree } = query;
+    let diet = "" 
+    if(vegan){
+        diet += "Vegan,"
+    }
+    if(vegetarian){
+        diet += "Vegetarian,"
+    }
+    if(glutenFree){
+        diet += "Gluten Free"
+    }
+    let recipes = await axios.get(`${api_domain}/complexSearch`, {
       params: {
-        query: name,
+        titleMatch: name,
+        diet: diet,
+        readyInMinutes: readyInMinutes,
+        number: 5,
         apiKey: process.env.spooncular_apiKey        
       },
     });
     let recipes_data = recipes.data;
-    let recieps_as_array = recipes_data.recipes.map(item => {
+    let recieps_as_array = recipes_data.results.map(item => {
         return {
             id: item.id,
             title: item.title,
-            readyInMinutes: item.readyInMinutes,
             image: item.image,
-            aggregateLikes: item.aggregateLikes,
-            vegan: item.vegan,
-            vegetarian: item.vegetarian,
-            glutenFree: item.glutenFree
         }
     });
     return recieps_as_array;
