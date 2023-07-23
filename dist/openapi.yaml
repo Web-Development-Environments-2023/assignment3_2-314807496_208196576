@@ -1,230 +1,237 @@
+---
 openapi: 3.0.0
 info:
-  title: Recipes api
-  description: API for recipes project
-  version: 1.0.1
+  title: assignment 3.1
+  description: api frontend and backend
+  termsOfService: https:/something
+  contact:
+    name: Liron Zvi
+    email: lironzv@post.bgu.ac.il
+  version: 1.0.0-oas3
 servers:
-# local:
-- url: "http://127.0.0.1:3000"
-# remote:
-# - url: "http://132.72.65.211"
-  description: SwaggerHub API Auto Mocking hey
-tags:
-- name: Auth
-  description: All authentication related routes
-- name: Users
-  description: All the user's personal app info
-- name: Recipes
-  description: All reciepes general info
+- url: "https://liron-ofir.cs.bgu.ac.il:443"
+  description: data server
 paths:
-  /register:
-    post:
-      tags:
-      - Auth
-      summary: A new user from the client is added to the server
-      description: A JSON object contains all the details about the new user.
-      requestBody:
-        description: Inventory item to add
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/User'
-        required: true
-      responses:
-        "201":
-          description: A new user has been added
-        "400":
-          description: wrong input parameters
-  /login:
-    post:
-      tags:
-      - Auth
-      summary: Login an exist user
-      description: An exist user login to the system
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/LoginScheme'
-        required: true
-      responses:
-        "200":
-          description: |
-            User was found in the DB and authenitcated successfully. The session ID is returned in a cookie named `session`.  You should include this cookie in subsequent requests
-          headers:
-            Set-Cookie:
-              style: simple
-              explode: false
-              schema:
-                type: string
-                example: session=87s97sdhgf279293f8w0e9
-        "401":
-          description: Authentication failed
-  /logout:
-    post:
-      tags:
-        - Auth
-      summary: logout a user from the system and delete his cookie
-      responses:
-        "200":
-          description: "the user has ben successfully logged out"
-  /users/favorites:
+  /getAllRecipes:
     get:
-      tags:
-      - Users
-      summary: Return the favorite recipes that were saved by user
-      description: Get an array of recipes that were saved by a specific user
+      description: Obtain information about recipes from the data server
       responses:
         "200":
-          description: data about the user's favorites recipes returned
+          description: Successful pull of recipes info
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/RecipePreview'
-        "401":
-          description: user is not authorized
-      security:
-      - cookieAuth: []
+                  $ref: '#/components/schemas/inline_response_200'
+  /watchedTheRecipe:
     post:
-      tags:
-      - Users
-      summary: save recipe in the favorites list of a user
-      description: save recipe in the favorites list of a user
+      description: changes the watched field to t
       requestBody:
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                reciepeId:
-                  type: string
-                  description: reciepe's id which the user saved
-                  example: 716429
-      responses:
-        "200":
-          description: The Recipe successfully saved as favorite
-        "401":
-          description: user is not authorized
-      security:
-      - cookieAuth: []
-  /recipes/{recipeId}:
-    get:
-      tags:
-      - Recipes
-      summary: Return preview details on recipe by his ID
-      description: Return preview details on recipe by his ID
-      parameters:
-      - name: recipeId
-        in: path
-        description: recipe's id
+              $ref: '#/components/schemas/watchedTheRecipe_body'
         required: true
-        style: simple
-        explode: false
-        schema:
-          type: integer
       responses:
         "200":
-          description: data about the recipe
+          description: Successfully updated the watched field
+        "404":
+          description: recipe not found
+  /addToFavorite:
+    put:
+      description: add recipe to favorite
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/addToFavorite_body'
+        required: true
+      responses:
+        "200":
+          description: Successfully added the recipe to favorites
+        "404":
+          description: recipe not found
+  /addUser:
+    post:
+      description: Creates a new user in the database
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/addUser_body'
+        required: true
+      responses:
+        "200":
+          description: Successfully created a new employee
+        "400":
+          description: bad request - wrong details
+  /addNewRecipe:
+    post:
+      description: Creates a new recipe in the database
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/addNewRecipe_body'
+        required: true
+      responses:
+        "200":
+          description: Successfully created a new employee
+  /validateUser:
+    get:
+      description: Obtain information about recipes from the data server
+      parameters:
+      - name: username
+        in: query
+        description: username
+        required: false
+        style: form
+        explode: true
+        schema:
+          maximum: 20
+          minimum: 10
+          type: string
+          example: ofir
+      - name: password
+        in: query
+        description: users password
+        required: false
+        style: form
+        explode: true
+        schema:
+          maximum: 20
+          minimum: 10
+          type: string
+          example: password
+      responses:
+        "200":
+          description: user and password are valid
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RecipePreview'
-        "404":
-          description: recipeId is not exists
+                type: boolean
+  /getFavoriteRecipes:
+    get:
+      description: Obtain information about favorite recipes from the data server
+      responses:
+        "200":
+          description: Successful pull of recipes info
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200'
+  /getMyRecipes:
+    get:
+      description: Obtain information about favorite recipes from the data server
+      responses:
+        "200":
+          description: Successful pull of recipes info
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200'
+  /getFamilyRecipes:
+    get:
+      description: Obtain information about favorite recipes from the data server
+      responses:
+        "200":
+          description: Successful pull of recipes info
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/inline_response_200'
 components:
   schemas:
-    User:
-      type: object
+    inline_response_200:
       properties:
-        username:
-          maxLength: 8
-          minLength: 3
-          type: string
-          description: username conatins between 3 to 8 letters only
-          example: my_name
-        firstname:
-          type: string
-          description: user's first name
-          example: my_first_name
-        lastname:
-          type: string
-          description: user's last name
-          example: my_last_name
-        country:
-          type: string
-          description: user's country
-          example: Israel
-        password:
-          maxLength: 10
-          minLength: 5
-          type: string
-          description: password conatins between 5 to 10 chars, at least one of them
-            is a number and a special char
-          format: password
-          example: my_name@12
-        email:
-          pattern: email
-          type: string
-          description: user's email
-          example: my_name12@gmail.com
-        # image-url:
-        #   pattern: URL
-        #   type: string
-        #   description: URL for the user's image
-        #   example: https://cloudinary.com/
-      description: Model containing user info
-    LoginScheme:
-      type: object
-      properties:
-        username:
-          maxLength: 8
-          minLength: 3
-          type: string
-          description: username conatins letters only
-        password:
-          maxLength: 10
-          minLength: 5
-          description: password conatins at least one number and one special char
-          format: password
-      example:
-        username: my_name
-        password: my_name@12
-    RecipePreview:
-      type: object
-      properties:
-        id:
-          type: integer
-          description: recipe identifier
-          example: 102
+        image:
+          type: object
+          example: lironOfir.jpg
         title:
           type: string
-          description: recipe name
-          example: Simple Macaroni and Cheese
-        image:
-          type: string
-          description: recipe image
-          format: URL
-          example: https://spoonacular.com/recipeimages/655455-566x370.jpg
-        readyInMinutes:
+          example: meatballs
+        preperation time:
           type: integer
-          description: the time takes to make this recipe
-          example: 45
+          example: 30
         popularity:
           type: integer
-          description: how many likes got this recipe
-          example: 5987
-        vegetarian:
+          example: 40
+        vegan vageiterian:
+          type: string
+          example: vegan
+        gluten free:
           type: boolean
-          description: indication if the recipe is vegetarian
-          example: false
-        vegan:
+          example: true
+        watched:
           type: boolean
-          description: indication if the recipe is vegan
-          example: false
-        glutenFree:
+          example: true
+        if favorite:
           type: boolean
-          description: indication if the recipe is gluten free
-          example: false
-  
+          example: true
+    watchedTheRecipe_body:
+      type: object
+      properties:
+        title:
+          type: string
+          example: meatball
+    addToFavorite_body:
+      type: object
+      properties:
+        title:
+          type: string
+          example: meatball
+    addUser_body:
+      type: object
+      properties:
+        username:
+          type: string
+          example: Ryan Pinkham
+        password:
+          type: string
+          example: Market Manager
+        first name:
+          type: string
+          example: liron
+        last name:
+          type: string
+          example: zvi
+        country:
+          type: string
+          example: israel
+        email:
+          type: string
+          example: e@gmail.com
+    addNewRecipe_body:
+      type: object
+      properties:
+        image:
+          type: object
+          example: lironOfir.jpg
+        title:
+          type: string
+          example: meatballs
+        preperation time:
+          type: integer
+          example: 30
+        popularity:
+          type: integer
+          example: 40
+        vegan vageiterian:
+          type: string
+          example: vegan
+        gluten free:
+          type: boolean
+          example: true
+        watched:
+          type: boolean
+          example: true
+        if favorite:
+          type: boolean
+          example: true
